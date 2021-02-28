@@ -99,7 +99,7 @@ def sniffing_function(packet):
         row.append("normal")
         print(row)
 
-        with open("normal.csv", 'a+', newline='') as out:
+        with open("attack.csv", 'a+', newline='') as out:
             file_write = csv.writer(out, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             file_write.writerow(row)
 
