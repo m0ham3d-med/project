@@ -142,7 +142,7 @@ class Classifier(object):
         
         
 
-        parameters.append("attack")
+        parameters.append("normal")
         return parameters
 
 
