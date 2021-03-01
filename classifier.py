@@ -55,6 +55,17 @@ class Classifier(object):
         if self.__is_valid(body):
             request_parameters = urllib.parse.parse_qs(self.__clean_pattern(req.request))
  
+    def to_json(self,paramters):
+        json_req = {}
+        json_req["path"]   = paramters[0]
+        json_req["cookies"]= paramters[1]
+        json_req["headers"]= paramters[2]
+        json_req["params"] = paramters[3]
+        json_req["state"]  = paramters[4]
+        
+        return json_req
+        
+
     # def get_path_parameter(self,text):
         # request_parameters = urllib.parse.parse_qs(text)
         # param = []
@@ -101,37 +112,37 @@ class Classifier(object):
     
         ###  get path
         if self.__is_valid(path):
-           parameters.append(self.__clean_pattern(path))
+           parameters.append(str(self.__clean_pattern(path)))
             
         #### get cookies
         if 'Cookie' in req.headers and self.__is_valid(req.headers['Cookie']):
             req.cookies = req.headers.pop("Cookie")
-            parameters.append(self.__clean_pattern(self.get_cookie_value(req.cookies)))
+            parameters.append(str(self.__clean_pattern(self.get_cookie_value(req.cookies))))
         else:
-            parameters.append(None)
+            parameters.append("None")
                 
 
         
         ###### get headers
         if self.__is_valid(req.headers) and isinstance(req.headers, dict) :
             headers = self.get_headers_value(req.headers)
-            parameters.append(self.__clean_pattern(headers))
+            parameters.append(str(self.__clean_pattern(headers)))
         
         #####get parameters
         if self.__is_valid(req.body):
             if isinstance(req.body, dict): 
-                parameters.append(self.__clean_pattern(self.get_json_parameter(req.body)))
+                parameters.append(str(self.__clean_pattern(self.get_json_parameter(req.body))))
             else:
-                parameters.append(self.__clean_pattern(self.get_stream_parameter(req.body)))
+                parameters.append(str(self.__clean_pattern(self.get_stream_parameter(req.body))))
         if self.__is_valid(params):
-            parameters.append(self.__clean_pattern(self.get_stream_parameter(params)))
+            parameters.append(str(self.__clean_pattern(self.get_stream_parameter(params))))
         
     
 
         
         
 
-        print(parameters)
-        return(parameters)
+        parameters.append("attack")
+        return parameters
 
 

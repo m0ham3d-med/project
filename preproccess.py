@@ -63,6 +63,7 @@ header_fields = [
                 ]
 
 filename = "out.csv"
+data =[]
 def get_header(packet):
     headers = {}
     for field in header_fields:
@@ -95,8 +96,8 @@ def sniffing_function(packet):
         #     out.write(str(clsf.classify_request(req)))
         # dataset.append(clsf.classify_request(req))
 
-        row =clsf.classify_request(req)
-        row.append("normal")
+        row = clsf.classify_request(req)
+        
         print(row)
 
         with open("attack.csv", 'a+', newline='') as out:
