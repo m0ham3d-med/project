@@ -5,7 +5,7 @@ from scapy.layers.inet import IP, TCP
 from scapy.sessions import IPSession, TCPSession
 import urllib.parse
 from classifier import Classifier
-from request import Request
+from request import Request,PreprocessRequest
 import csv
 
 header_fields = [
@@ -62,8 +62,6 @@ header_fields = [
                 'X_Wap_Profile'
                 ]
 
-filename = "out.csv"
-data =[]
 def get_header(packet):
     headers = {}
     for field in header_fields:
@@ -73,6 +71,14 @@ def get_header(packet):
 
     return headers
 # https://scapy.readthedocs.io/en/latest/layers/http.html
+
+filename = "datset2.csv"
+
+def add_to_csv_file(filename,data):
+    with open(filename, 'a+', newline='') as out:
+            file_write = csv.writer(out, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            file_write.writerow(data)
+
 def sniffing_function(packet):
     if packet.haslayer(HTTPRequest):
         req = Request()
@@ -90,19 +96,14 @@ def sniffing_function(packet):
             req.body = packet[Raw].load.decode()
 
 
-        clsf = Classifier()
-        # clsf.classify_request(req)
-        # with open(filename, 'w') as out:
-        #     out.write(str(clsf.classify_request(req)))
-        # dataset.append(clsf.classify_request(req))
-
-        row = clsf.classify_request(req)
+    
+    #preprocess request    
+        prc = PreprocessRequest()
+        data =prc.process(req)
+        print(data)
+        add_to_csv_file(filename,data)
+# 
         
-        print(row)
-
-        with open("normal.csv", 'a+', newline='') as out:
-            file_write = csv.writer(out, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            file_write.writerow(row)
 
 
 sniff(prn = sniffing_function, iface='ens33', filter = 'port 80 ' + ' and inbound', session = TCPSession)

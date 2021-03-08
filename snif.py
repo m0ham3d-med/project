@@ -5,7 +5,7 @@ from scapy.layers.inet import IP, TCP
 from scapy.sessions import IPSession, TCPSession
 import urllib.parse
 from classifier import Classifier
-from request import Request
+from request import Request ,Preprocessrequest
 
 header_fields = [
                 'A_IM',
@@ -87,8 +87,8 @@ def sniffing_function(packet):
             req.body = packet[Raw].load.decode()
 
 
-        clsf = Classifier()
-        clsf.classify_request(req)
+        prc = PreprocessRequest()
+        prc.process(req)
        
 
 
