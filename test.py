@@ -10,7 +10,8 @@ with open('./dataset.csv', 'r') as read_obj:
     for row in csv_reader:
         list=[]
         state=row.pop()
-        # print(row)
+        row.pop(0)
+        
         s = ' '.join([str(elem) for elem in row])
         list.append(s)
         list.append(state)
