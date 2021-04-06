@@ -9,9 +9,12 @@ def read_cisc_row(filename ):
         line = line.replace("\n", "")
         if "POST " in line or "GET " in line:
             array.append(" ".join(req))
+            line = line.split(" ")[1]
             req = []
             req.append(line)
         else :
+            if ":" in line :
+                line = line.split(":")[1]
             req.append(line)
     return array
 
@@ -35,12 +38,15 @@ def request_to_bow(text):
 
 
 
-csv_filename  = "test.csv"
-cisc_filename = "normalTrafficTraining.txt"
+csv_filename  = "cis_dataset.csv"
+cisc_filename = "anomalousTrafficTest.txt"
 request_list =read_cisc_row(cisc_filename)
 
 for req in request_list :
-    bag = request_to_bow(str(req))
-    bag.append(0)
+    bag=[]
+    bag.append (str(req))
+    bag.append("attack")
+    # bag = request_to_bow(str(req))
+    # bag.append(0)
     add_to_csv_file(csv_filename,bag)
 
