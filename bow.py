@@ -22,8 +22,8 @@ def request_to_bow(text):
 
 
 
-file1 = open("global_dataset.csv", "r")
-csv_filename = "ml_dataset.csv"
+file1 = open("datsets/global_dataset.csv", "r")
+csv_filename = "datsets/ml_dataset.csv"
 
 for line in file1:
     bag = request_to_bow(str(line))
